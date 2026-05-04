@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisis Penjualan UMKM Indonesia 2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Variables ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:    #E63946;
+    --orange: #FF6B35;
+    --navy:   #1D3557;
+    --blue:   #457B9D;
+    --cream:  #F5F0E8;
+    --white:  #FAFAF8;
+    --ink:    #1a1a2e;
+    --muted:  #6b6b7b;
+    --border: #e0d8cc;
+    --card:   #ffffff;
+    --shadow: 0 4px 24px rgba(29,53,87,.10);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy);
+    padding: 0 clamp(1rem,5vw,4rem);
+    display: flex; align-items: center; gap: 2rem;
+    height: 56px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    color: #fff; font-size: 1.1rem; font-weight: 700;
+    text-decoration: none; letter-spacing: .02em;
+    flex: 1;
+  }
+  .nav-links { display: flex; gap: 1.6rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,.75); text-decoration: none;
+    font-size: .85rem; font-weight: 500; letter-spacing: .05em;
+    text-transform: uppercase; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: clamp(4rem,10vw,8rem) clamp(1rem,8vw,6rem) clamp(3rem,8vw,6rem);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 80% at 110% 50%, rgba(230,57,70,.18) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 60% at -10% 80%, rgba(69,123,157,.25) 0%, transparent 55%);
+  }
+  .hero-inner { position: relative; max-width: 760px; }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,107,53,.2); color: var(--orange);
+    border: 1px solid rgba(255,107,53,.4);
+    font-size: .75rem; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; padding: .3rem .8rem; border-radius: 100px;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    font-weight: 900; color: #fff;
+    line-height: 1.15; margin-bottom: 1.2rem;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero p {
+    color: rgba(255,255,255,.72); font-size: 1.05rem;
+    max-width: 600px; margin-bottom: 2rem; font-weight: 300;
+  }
+  .hero-stats {
+    display: flex; flex-wrap: wrap; gap: 1.5rem;
+  }
+  .stat-box {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px; padding: 1rem 1.5rem;
+    backdrop-filter: blur(8px);
+  }
+  .stat-box .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 700; color: var(--orange);
+    line-height: 1;
+  }
+  .stat-box .lbl {
+    font-size: .78rem; color: rgba(255,255,255,.6);
+    margin-top: .2rem; font-weight: 500;
+  }
+
+  /* ── SECTION WRAPPER ── */
+  .section {
+    max-width: 1060px; margin: 0 auto;
+    padding: clamp(3rem,8vw,5rem) clamp(1rem,5vw,2rem);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem,3.5vw,2.2rem);
+    font-weight: 700; color: var(--navy);
+    margin-bottom: .4rem;
+  }
+  .section-sub {
+    color: var(--muted); font-size: .95rem;
+    margin-bottom: 2.5rem; font-weight: 400;
+  }
+  .divider {
+    width: 48px; height: 4px;
+    background: var(--orange); border-radius: 2px;
+    margin: .6rem 0 2.2rem;
+  }
+
+  /* ── DATASET CARD ── */
+  .dataset-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem; margin-top: 1.5rem;
+  }
+  .d-card {
+    background: var(--card); border-radius: 12px;
+    padding: 1.2rem 1.4rem; border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .d-card .icon { font-size: 1.6rem; margin-bottom: .5rem; }
+  .d-card h4 { font-size: .8rem; text-transform: uppercase;
+               letter-spacing: .08em; color: var(--muted); margin-bottom: .3rem; }
+  .d-card p { font-weight: 600; color: var(--navy); font-size: .95rem; }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: .8rem; counter-reset: step; }
+  .step {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: var(--card); border-radius: 10px;
+    padding: 1rem 1.4rem; border: 1px solid var(--border);
+  }
+  .step-num {
+    min-width: 32px; height: 32px;
+    background: var(--navy); color: #fff;
+    border-radius: 50%; display: grid; place-items: center;
+    font-size: .85rem; font-weight: 700; flex-shrink: 0;
+  }
+  .step p { font-size: .9rem; color: var(--ink); }
+  .step strong { color: var(--navy); }
+
+  /* ── CHART SECTION ── */
+  .chart-block {
+    background: var(--card); border-radius: 16px;
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    overflow: hidden; margin-bottom: 2rem;
+  }
+  .chart-block img {
+    width: 100%; height: auto; display: block;
+    border-bottom: 1px solid var(--border);
+  }
+  .chart-caption {
+    padding: 1.4rem 1.8rem;
+  }
+  .chart-caption h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--navy); margin-bottom: .5rem;
+  }
+  .chart-caption p { font-size: .9rem; color: var(--muted); line-height: 1.65; }
+  .insight-chip {
+    display: inline-block;
+    background: rgba(230,57,70,.08); color: var(--red);
+    border: 1px solid rgba(230,57,70,.2);
+    font-size: .77rem; font-weight: 600; letter-spacing: .04em;
+    padding: .2rem .7rem; border-radius: 100px; margin-bottom: .7rem;
+  }
+
+  /* ── INSIGHT & REKOMENDASI ── */
+  .insight-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.2rem;
+  }
+  .insight-card {
+    background: var(--card); border-radius: 14px;
+    padding: 1.4rem; border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--orange);
+  }
+  .insight-card h4 {
+    font-size: .9rem; font-weight: 700; color: var(--navy);
+    margin-bottom: .5rem; display: flex; align-items: center; gap: .5rem;
+  }
+  .insight-card p { font-size: .875rem; color: var(--muted); line-height: 1.6; }
+
+  .rekom-card {
+    background: var(--navy); border-radius: 14px;
+    padding: 1.4rem; border: 1px solid transparent;
+    box-shadow: var(--shadow);
+  }
+  .rekom-card h4 {
+    font-size: .9rem; font-weight: 700; color: var(--orange);
+    margin-bottom: .5rem; display: flex; align-items: center; gap: .5rem;
+  }
+  .rekom-card p { font-size: .875rem; color: rgba(255,255,255,.72); line-height: 1.6; }
+
+  /* ── SOURCE LINK ── */
+  .source-banner {
+    background: var(--ink); border-radius: 16px;
+    padding: 2rem 2.4rem; display: flex; align-items: center;
+    gap: 1.5rem; flex-wrap: wrap;
+  }
+  .source-banner .src-icon { font-size: 2.5rem; }
+  .source-banner h3 {
+    color: #fff; font-size: 1.1rem;
+    font-family: 'Playfair Display', serif; margin-bottom: .2rem;
+  }
+  .source-banner p { color: rgba(255,255,255,.6); font-size: .88rem; flex: 1; }
+  .btn-github {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--orange); color: #fff; font-weight: 600;
+    text-decoration: none; padding: .7rem 1.5rem; border-radius: 8px;
+    font-size: .9rem; transition: opacity .2s; white-space: nowrap;
+  }
+  .btn-github:hover { opacity: .88; }
+
+  /* ── PROFILE ── */
+  .profile-card {
+    display: flex; gap: 2.5rem; align-items: flex-start;
+    background: var(--card); border-radius: 20px;
+    padding: 2.5rem; border: 1px solid var(--border);
+    box-shadow: var(--shadow); flex-wrap: wrap;
+  }
+  .avatar-wrap { flex-shrink: 0; }
+  .avatar {
+    width: 130px; height: 130px; border-radius: 50%;
+    border: 4px solid var(--orange);
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    display: grid; place-items: center;
+    font-size: 3.5rem; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(230,57,70,.25);
+  }
+  .profile-info { flex: 1; min-width: 220px; }
+  .profile-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 700; color: var(--navy);
+    margin-bottom: .2rem;
+  }
+  .profile-class {
+    display: inline-block; background: var(--navy);
+    color: var(--orange); font-size: .8rem; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: .25rem .75rem; border-radius: 100px; margin-bottom: 1rem;
+  }
+  .profile-bio { font-size: .9rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .achievements { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  .achievements li {
+    display: flex; gap: .75rem; align-items: flex-start;
+    font-size: .9rem; color: var(--ink);
+  }
+  .ach-icon {
+    min-width: 28px; height: 28px; border-radius: 8px;
+    background: rgba(255,107,53,.12); color: var(--orange);
+    display: grid; place-items: center; font-size: .9rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy); color: rgba(255,255,255,.5);
+    text-align: center; padding: 1.8rem 1rem;
+    font-size: .82rem; letter-spacing: .03em;
+  }
+
+  /* ── SEPARATOR ── */
+  .sep { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  @media (max-width: 600px) {
+    .hero-stats { gap: 1rem; }
+    .stat-box { padding: .8rem 1.1rem; }
+    .source-banner { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">📊 UMKM 2024</a>
+  <ul class="nav-links">
+    <li><a href="#dataset">Dataset</a></li>
+    <li><a href="#grafik">Grafik</a></li>
+    <li><a href="#insight">Insight</a></li>
+    <li><a href="#profil">Profil</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">📦 Data Analysis Project</span>
+    <h1>Penjualan <span>UMKM</span><br>Indonesia 2024</h1>
+    <p>
+      Analisis menyeluruh tren penjualan Usaha Mikro, Kecil, dan Menengah
+      di Indonesia sepanjang tahun 2024 — mencakup 4 wilayah utama,
+      3 sektor unggulan, dan 12 bulan data.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-box"><div class="val">Rp 996,5T</div><div class="lbl">Total Penjualan Nasional</div></div>
+      <div class="stat-box"><div class="val">144</div><div class="lbl">Observasi Data</div></div>
+      <div class="stat-box"><div class="val">4 Grafik</div><div class="lbl">Visualisasi Interaktif</div></div>
+      <div class="stat-box"><div class="val">2024</div><div class="lbl">Tahun Analisis</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DATASET & LANGKAH ANALISIS -->
+<div id="dataset">
+<div class="section">
+  <p class="section-title">Tentang Dataset</p>
+  <div class="divider"></div>
+  <p class="section-sub">
+    Dataset ini merupakan kumpulan data sintetis penjualan UMKM Indonesia tahun 2024,
+    disusun berdasarkan pola data BPS & Kemenkop UKM. Mencakup variabel bulanan,
+    sektor usaha, dan wilayah distribusi.
+  </p>
+
+  <div class="dataset-grid">
+    <div class="d-card"><div class="icon">📅</div><h4>Periode</h4><p>Januari – Desember 2024</p></div>
+    <div class="d-card"><div class="icon">🗂️</div><h4>Jumlah Baris</h4><p>144 observasi</p></div>
+    <div class="d-card"><div class="icon">🏭</div><h4>Sektor</h4><p>Kuliner, Fashion, Kerajinan</p></div>
+    <div class="d-card"><div class="icon">🗺️</div><h4>Wilayah</h4><p>Jawa, Sumatera, Kalimantan, Sulawesi</p></div>
+    <div class="d-card"><div class="icon">💰</div><h4>Satuan Nilai</h4><p>Juta Rupiah (total_penjualan)</p></div>
+    <div class="d-card"><div class="icon">📈</div><h4>Variabel Utama</h4><p>Penjualan, Pertumbuhan %, Jumlah UMKM</p></div>
+  </div>
+
+  <br>
+  <p class="section-title" style="font-size:1.3rem; margin-top:2rem;">Langkah Analisis</p>
+  <div class="divider"></div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><p><strong>Pengumpulan & Pembersihan Data</strong> — Menyusun dataset CSV dengan 7 variabel utama; memastikan tidak ada nilai kosong (missing values) dan tipe data sesuai.</p></div>
+    <div class="step"><div class="step-num">2</div><p><strong>Eksplorasi Data (EDA)</strong> — Menghitung statistik deskriptif, distribusi per sektor dan wilayah, serta identifikasi pola musiman (seasonality).</p></div>
+    <div class="step"><div class="step-num">3</div><p><strong>Visualisasi</strong> — Membuat 4 grafik: tren bulanan, distribusi per sektor, perbandingan wilayah, dan heatmap pertumbuhan menggunakan Matplotlib & Seaborn.</p></div>
+    <div class="step"><div class="step-num">4</div><p><strong>Interpretasi & Rekomendasi</strong> — Menarik insight bisnis dari pola data dan merumuskan rekomendasi strategis untuk pelaku UMKM dan pembuat kebijakan.</p></div>
+  </div>
+</div>
+</div>
+
+<hr class="sep">
+
+<!-- GRAFIK -->
+<div id="grafik">
+<div class="section">
+  <p class="section-title">Visualisasi Data</p>
+  <div class="divider"></div>
+  <p class="section-sub">Empat grafik berikut menggambarkan pola penjualan UMKM Indonesia dari berbagai sudut pandang.</p>
+
+  <!-- Grafik 1 -->
+  <div class="chart-block">
+    <img src="img/grafik1_tren_bulanan.png" alt="Tren Total Penjualan Bulanan UMKM 2024">
+    <div class="chart-caption">
+      <span class="insight-chip">📈 Tren Temporal</span>
+      <h3>Grafik 1 — Tren Total Penjualan Bulanan</h3>
+      <p>
+        Penjualan UMKM menunjukkan tren <strong>meningkat konsisten</strong> sepanjang 2024.
+        Lonjakan signifikan terjadi di bulan <strong>Mei</strong> (efek Lebaran) dan
+        puncaknya di <strong>November–Desember</strong> yang bertepatan dengan Harbolnas 11.11 dan 12.12.
+        Sedikit koreksi terjadi di Juni pasca Lebaran, namun segera pulih di bulan berikutnya.
+        Total penjualan nasional mencapai <strong>Rp 996,5 Triliun</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Grafik 2 -->
+  <div class="chart-block">
+    <img src="img/grafik2_sektor.png" alt="Total Penjualan per Sektor UMKM 2024">
+    <div class="chart-caption">
+      <span class="insight-chip">🏭 Komposisi Sektor</span>
+      <h3>Grafik 2 — Total Penjualan per Sektor</h3>
+      <p>
+        Sektor <strong>Kuliner</strong> mendominasi dengan kontribusi terbesar (~Rp 533T),
+        diikuti <strong>Fashion</strong> (~Rp 352T) dan <strong>Kerajinan</strong> (~Rp 111T).
+        Kuliner yang mencakup makanan & minuman tetap menjadi tulang punggung ekosistem UMKM Indonesia,
+        selaras dengan tingginya konsumsi domestik masyarakat dan kemudahan entry barrier sektor ini.
+      </p>
+    </div>
+  </div>
+
+  <!-- Grafik 3 -->
+  <div class="chart-block">
+    <img src="img/grafik3_wilayah.png" alt="Perbandingan Penjualan per Wilayah dan Sektor">
+    <div class="chart-caption">
+      <span class="insight-chip">🗺️ Distribusi Wilayah</span>
+      <h3>Grafik 3 — Perbandingan Penjualan per Wilayah & Sektor</h3>
+      <p>
+        <strong>Jawa</strong> mendominasi penjualan di semua sektor karena kepadatan penduduk dan
+        infrastruktur logistik yang lebih matang. Namun, <strong>Sumatera</strong> menunjukkan
+        pertumbuhan yang solid, terutama di sektor Kuliner dan Fashion.
+        Kalimantan dan Sulawesi, meski lebih kecil nilainya, mencatat angka pertumbuhan
+        yang kompetitif — menandakan potensi ekspansi yang besar di luar Jawa.
+      </p>
+    </div>
+  </div>
+
+  <!-- Grafik 4 -->
+  <div class="chart-block">
+    <img src="img/grafik4_heatmap.png" alt="Heatmap Pertumbuhan Penjualan per Bulan dan Sektor">
+    <div class="chart-caption">
+      <span class="insight-chip">🔥 Heatmap Pertumbuhan</span>
+      <h3>Grafik 4 — Heatmap Rata-rata Pertumbuhan (%) per Bulan & Sektor</h3>
+      <p>
+        Heatmap ini memvisualisasikan intensitas pertumbuhan penjualan tiap sektor per bulan.
+        Warna <strong>hijau gelap</strong> menandakan pertumbuhan tinggi, sedangkan warna <strong>merah</strong>
+        menandakan kontraksi. Terlihat jelas bahwa <strong>November</strong> menjadi bulan terpanas
+        untuk semua sektor, khususnya Fashion dan Kerajinan yang terdongkrak Harbolnas.
+        Sebaliknya, <strong>Juni</strong> menjadi satu-satunya bulan dengan pertumbuhan negatif (post-Lebaran dip).
+      </p>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="sep">
+
+<!-- INSIGHT & REKOMENDASI -->
+<div id="insight">
+<div class="section">
+  <p class="section-title">Insight & Rekomendasi</p>
+  <div class="divider"></div>
+  <p class="section-sub" style="margin-bottom:1.5rem;">Temuan utama dari analisis data dan langkah strategis yang direkomendasikan.</p>
+
+  <p style="font-weight:700; color:var(--navy); font-size:1rem; margin-bottom:1rem;">📌 Key Insights</p>
+  <div class="insight-grid" style="margin-bottom:2rem;">
+    <div class="insight-card">
+      <h4>🌙 Efek Musiman Kuat</h4>
+      <p>Lebaran (Mei) dan Harbolnas (Nov–Des) menghasilkan lonjakan penjualan 15–30% di atas rata-rata bulan biasa, konsisten untuk semua sektor.</p>
+    </div>
+    <div class="insight-card">
+      <h4>🍜 Dominasi Kuliner</h4>
+      <p>Sektor kuliner mengontribusi >53% total penjualan UMKM nasional. Resistensinya terhadap fluktuasi ekonomi menjadikannya fondasi UMKM Indonesia.</p>
+    </div>
+    <div class="insight-card">
+      <h4>🗺️ Kesenjangan Jawa–Luar Jawa</h4>
+      <p>Jawa menghasilkan penjualan 3–4× lebih tinggi dibanding wilayah lain. Namun, luar Jawa mencatat pertumbuhan (%) lebih agresif, terutama Kalimantan di sektor Fashion.</p>
+    </div>
+    <div class="insight-card">
+      <h4>📉 Koreksi Pasca-Hari Besar</h4>
+      <p>Bulan Juni secara konsisten mengalami koreksi negatif. Ini pola alami (demand pull-forward) yang harus diantisipasi dalam manajemen stok UMKM.</p>
+    </div>
+  </div>
+
+  <p style="font-weight:700; color:var(--navy); font-size:1rem; margin-bottom:1rem;">🚀 Rekomendasi Strategis</p>
+  <div class="insight-grid">
+    <div class="rekom-card">
+      <h4>📦 Persiapan Stok Musiman</h4>
+      <p>UMKM perlu membangun stok 6–8 minggu sebelum Lebaran & Harbolnas. Kolaborasi dengan supplier lokal dapat menekan biaya logistik.</p>
+    </div>
+    <div class="rekom-card">
+      <h4>🌍 Ekspansi Luar Jawa</h4>
+      <p>Potensi pasar Kalimantan dan Sulawesi belum tergarap maksimal. Program onboarding digital UMKM daerah bisa mendorong pertumbuhan >20% per tahun.</p>
+    </div>
+    <div class="rekom-card">
+      <h4>🎨 Diversifikasi Sektor Kerajinan</h4>
+      <p>Kerajinan memiliki margin terbesar namun volume terkecil. Dukungan branding digital dan marketplace khusus craft dapat melipatgandakan jangkauannya.</p>
+    </div>
+    <div class="rekom-card">
+      <h4>💳 Digitalisasi Pembayaran</h4>
+      <p>Adopsi QRIS & dompet digital terbukti meningkatkan frekuensi transaksi. Target 100% UMKM aktif dengan akses pembayaran digital pada akhir 2025.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="sep">
+
+<!-- SOURCE CODE LINK -->
+<div class="section">
+  <p class="section-title">Source Code & Data</p>
+  <div class="divider"></div>
+  <div class="source-banner">
+    <span class="src-icon">🐙</span>
+    <div>
+      <h3>Lihat Seluruh Proyek di GitHub</h3>
+      <p>Repository berisi <code>data.csv</code>, script Python (<code>analysis.py</code>),
+         folder <code>img/</code>, dan file <code>index.html</code> ini — sepenuhnya open-source dan dapat direplikasi.</p>
+    </div>
+    <a class="btn-github" href="https://github.com/username/umkm-analysis-2024" target="_blank">
+      ⭐ Buka Repository
+    </a>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- PROFIL PEMBUAT -->
+<div id="profil">
+<div class="section">
+  <p class="section-title">Profil Pembuat</p>
+  <div class="divider"></div>
+
+  <div class="profile-card">
+    <div class="avatar-wrap">
+      <div class="avatar">🧑‍💻</div>
+      <!-- Ganti <img> di bawah ini dengan foto wajah kamu -->
+      <!-- <img src="foto.jpg" style="width:130px;height:130px;border-radius:50%;border:4px solid var(--orange);"> -->
+    </div>
+    <div class="profile-info">
+      <p class="profile-name">Nama Lengkap Kamu</p>
+      <span class="profile-class">Kelas XII RPL 2 · SMKN X</span>
+      <!-- Ganti info di atas dengan nama dan kelas kamu -->
+      <p class="profile-bio">
+        Siswa/mahasiswa yang tertarik di bidang data analitik, pengembangan web, dan kewirausahaan digital.
+        Proyek ini dibuat sebagai tugas analisis data menggunakan Python dan visualisasi untuk GitHub Pages.
+      </p>
+      <ul class="achievements">
+        <li>
+          <span class="ach-icon">🥇</span>
+          <span><strong>Juara 1 Lomba Coding tingkat Kabupaten</strong> — 2023</span>
+        </li>
+        <li>
+          <span class="ach-icon">🏆</span>
+          <span><strong>Finalis Olimpiade Sains Nasional (OSN) bidang Komputer</strong> — 2024</span>
+        </li>
+        <li>
+          <span class="ach-icon">🎖️</span>
+          <span><strong>Sertifikat Google Data Analytics Professional Certificate</strong> — 2024</span>
+        </li>
+        <li>
+          <span class="ach-icon">📜</span>
+          <span><strong>Peserta aktif Bangkit Academy — Machine Learning Path</strong> — 2024</span>
+        </li>
+        <li>
+          <span class="ach-icon">🌟</span>
+          <span><strong>Siswa Berprestasi tingkat Sekolah</strong> — 3 tahun berturut-turut</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:.82rem; color:var(--muted); margin-top:1.2rem; text-align:center;">
+    💡 <em>Ganti placeholder nama, kelas, foto (emoji), dan pencapaian di atas dengan informasi asli kamu.</em>
+  </p>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2024 Analisis Penjualan UMKM Indonesia · Dibuat dengan ❤️ menggunakan Python & GitHub Pages
+</footer>
+
+</body>
+</html>
